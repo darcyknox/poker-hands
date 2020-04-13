@@ -41,11 +41,13 @@ def main():
 
     for line in sys.stdin:
 
+        finalString = ""
+
         # get line of input and convert to an array of cards (hand)
         hand = re.split("/|-|\s", line.strip().upper())
 
-        if(len(hand) != 5):
-            print("Invalid: " + line)
+        if (len(hand) != 5):
+            print("Invalid: " + line.strip())
             break
             #exit()
 
@@ -64,6 +66,12 @@ def main():
 
         handDict = {}
         for card in hand:
+            #print(handDict)
+            #print(card)
+            if card in handDict:
+                print("duplicate card")
+                print("Invalid: " + line.strip())
+                break
             cardVal = valuesDict[card]
             handDict.update({card : cardVal})
 
@@ -72,13 +80,13 @@ def main():
 
         #print(sortedHand)
 
-        finalString = ""
+
         for card in sortedHand:
             finalString = finalString + card[0] + " "
 
         finalString = finalString.strip().replace("T", "10")
-        print(finalString)
 
+        print(finalString)
 
 
 
