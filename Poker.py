@@ -42,51 +42,69 @@ def main():
     for line in sys.stdin:
 
         finalString = ""
+        valid = True
 
         # get line of input and convert to an array of cards (hand)
-        hand = re.split("/|-|\s", line.strip().upper())
+        line = line.strip().upper()
 
-        if (len(hand) != 5):
-            print("Invalid: " + line.strip())
-            break
-            #exit()
+        hand = line.split("/")
 
-        #print("Old hand: " + str(hand))
+        if (len(hand) == 1):
+            hand = line.split("-")
+            if (len(hand) == 1):
+                hand = line.split(" ")
+                if (len(hand) != 5):
+                    print("Invalid" + line)
+                    valid = False
+            elif (len(hand) != 5):
+                print("Invalid" + line)
+                valid = False
+        elif (len(hand) != 5):
+            print("Invalid: " + line)
+            valid = False
 
-        hand = [card.replace("10", "T") for card in hand]
-        hand = [card.replace("11", "J") for card in hand]
-        hand = [card.replace("12", "Q") for card in hand]
-        hand = [card.replace("13", "K") for card in hand]
-        hand = [card.replace("1", "A") for card in hand]
 
-        #print("New hand: " + str(hand))
+        if (valid):
 
-        # can't have two of the same card
-        # formatting non-number cards
+            hand = [card.replace("10", "T") for card in hand]
+            hand = [card.replace("11", "J") for card in hand]
+            hand = [card.replace("12", "Q") for card in hand]
+            hand = [card.replace("13", "K") for card in hand]
+            hand = [card.replace("1", "A") for card in hand]
 
-        handDict = {}
-        for card in hand:
+            #print("New hand: " + str(hand))
+
+            # can't have two of the same card
+            # formatting non-number cards
+
+            handDict = {}
+            for card in hand:
+                #print(handDict)
+                #print(card)
+                if card in handDict:
+                    print("duplicate card")
+                    print("Invalid: " + line)
+                    break
+                elif not card in valuesDict:
+                    print("duplicate card")
+                    print("Invalid: " + line)
+                    break
+
+                cardVal = valuesDict[card]
+                handDict.update({card : cardVal})
+
             #print(handDict)
-            #print(card)
-            if card in handDict:
-                print("duplicate card")
-                print("Invalid: " + line.strip())
-                break
-            cardVal = valuesDict[card]
-            handDict.update({card : cardVal})
+            sortedHand = sorted(handDict.items(), key= lambda cardValue: cardValue[1])
 
-        #print(handDict)
-        sortedHand = sorted(handDict.items(), key= lambda cardValue: cardValue[1])
-
-        #print(sortedHand)
+            #print(sortedHand)
 
 
-        for card in sortedHand:
-            finalString = finalString + card[0] + " "
+            for card in sortedHand:
+                finalString = finalString + card[0] + " "
 
-        finalString = finalString.strip().replace("T", "10")
+            finalString = finalString.strip().replace("T", "10")
 
-        print(finalString)
+            print(finalString)
 
 
 
