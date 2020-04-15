@@ -1,18 +1,27 @@
 import sys
 import re
-import time
 
-class Poker:
-    """docstring for Poker."""
+# COSC326 Etude-7 Poker Hands
+# Author: Darcy Knox
+# Date: April 2020
 
-    def __init__(self, arg):
-        super(Poker, self).__init__()
-        self.arg = arg
-
+# 1. Creates a dictionary of card: value pairs with correct relative values.
+# 2. Reads the input and checks that it can be correctly separated into 5 parts.
+# 3. Replace cards that have multiple key interpretations (e.g. 12 -> Q) with
+#    the key that is used in the values dictionary.
+# 4. Iterate through the hand checking that the card is an actual card, and
+#    that there are no duplicate cards within the hand.
+# 5. Check the card against a regex pattern.
+# 6. Get the value of the card and add it to a dictionary that contains all
+#    cards in the current hand.
+# 7. Use the built in sorted() function to sort the hand (by the values for each
+#    card) into an array of key:value tuples.
+# 8. Print the key of each card in the hand.
+#
+# >  If any of the checks fail, the program stops processing and outputs the
+#    invalid input as it was entered.
 
 def main():
-
-
 
     suits = ["C", "D", "H", "S"]
 
@@ -34,22 +43,14 @@ def main():
             else:
                 valuesDict.update({str(i + 1) + suits[j]: i**3 + j})
 
-    #for j in range(len(suits)):
-        #valuesDict.update({"1" + suits[j]: max(valuesDict.values()) + j + 1})
-
-    #print(valuesDict)
-
 
     cards = []
 
     for line in sys.stdin:
 
-        start = time.time()
-
         finalString = ""
         validHand = True
 
-        # get line of input and convert to an array of cards (hand)
         inputLine = line.strip()
 
         line = line.strip().upper()
@@ -73,22 +74,16 @@ def main():
 
         if (validHand):
 
-            hand = [card.replace("10", "T") for card in hand]
-            hand = [card.replace("11", "J") for card in hand]
-            hand = [card.replace("12", "Q") for card in hand]
-            hand = [card.replace("13", "K") for card in hand]
-            hand = [card.replace("1", "A") for card in hand]
-
-            #print("New hand: " + str(hand))
-
-            # can't have two of the same card
-            # formatting non-number cards
+            hand = [card.replace("10", "T")
+                        .replace("11", "J")
+                        .replace("12", "Q")
+                        .replace("13", "K")
+                        .replace("1", "A") for card in hand]
 
             handDict = {}
             for card in hand:
                 validCard = True
                 if card in handDict:
-                    print("duplicate card: " + card)
                     print("Invalid: " + inputLine)
                     validCard = False
                     validHand = False
@@ -103,10 +98,8 @@ def main():
                 validCard = validCardPattern.match(card)
 
                 if validCard:
-
                     cardVal = valuesDict[card]
                     handDict.update({card : cardVal})
-
                 else:
                     validHand = False
                     break
@@ -116,17 +109,13 @@ def main():
                 #print(handDict)
                 sortedHand = sorted(handDict.items(), key= lambda cardValue: cardValue[1])
 
-                #print(sortedHand)
-
-
                 for card in sortedHand:
                     finalString = finalString + card[0] + " "
 
                 finalString = finalString.strip().replace("T", "10")
+                # T is the only key that needs to be changed back
 
                 print(finalString)
-
-            #print(time.time() - start)
 
 
 
