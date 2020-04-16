@@ -6,7 +6,8 @@ import re
 # Date: April 2020
 
 # 1. Creates a dictionary of card: value pairs with correct relative values.
-# 2. Reads the input and checks that it can be correctly separated into 5 parts.
+# 2. Reads the input and checks that it can be correctly separated into 5 parts,
+#    and that there are no leading or trailing whitespace.
 # 3. Replace cards that have multiple key interpretations (e.g. 12 -> Q) with
 #    the key that is used in the values dictionary.
 # 4. Iterate through the hand checking that the card is an actual card, and
@@ -51,25 +52,32 @@ def main():
         finalString = ""
         validHand = True
 
-        inputLine = line.strip()
+        inputLine = line.replace("\n", "", 1)
 
-        line = line.strip().upper()
+        if (inputLine != inputLine.strip()):
+            print("Invalid: " + inputLine)
+            validHand = False
 
-        hand = line.split("/")
 
-        if (len(hand) == 1):
-            hand = line.split("-")
+        if (validHand):
+
+            line = line.strip().upper()
+
+            hand = line.split("/")
+
             if (len(hand) == 1):
-                hand = line.split(" ")
-                if (len(hand) != 5):
+                hand = line.split("-")
+                if (len(hand) == 1):
+                    hand = line.split(" ")
+                    if (len(hand) != 5):
+                        print("Invalid: " + inputLine)
+                        validHand = False
+                elif (len(hand) != 5):
                     print("Invalid: " + inputLine)
                     validHand = False
             elif (len(hand) != 5):
                 print("Invalid: " + inputLine)
                 validHand = False
-        elif (len(hand) != 5):
-            print("Invalid: " + inputLine)
-            validHand = False
 
 
         if (validHand):
@@ -106,7 +114,6 @@ def main():
 
 
             if (validHand):
-                #print(handDict)
                 sortedHand = sorted(handDict.items(), key= lambda cardValue: cardValue[1])
 
                 for card in sortedHand:

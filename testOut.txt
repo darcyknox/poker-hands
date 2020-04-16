@@ -1,0 +1,6 @@
+2C 5C 10D KH AD
+Invalid: 5d/ad/kd/qh/11s\n
+Invalid: ts/10c-jh 6d 5s
+2C 3D 5C 5H 5S
+Invalid:  2c-5s-5c-5h-3d
+Invalid: 2c-5s-5c-5h-3d 
