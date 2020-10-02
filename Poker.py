@@ -29,6 +29,9 @@ def main():
     valuesDict = {}
 
     # create values dictionary
+    # for each card value/number
+    # (nested) for each suit of that number
+    # create a dictionary entry (key:value pair) for each card
     for i in range(1, 14):
         for j in range(len(suits)):
             if (i == 9):
@@ -44,8 +47,6 @@ def main():
             else:
                 valuesDict.update({str(i + 1) + suits[j]: i**3 + j})
 
-
-    cards = []
 
     for line in sys.stdin:
 
